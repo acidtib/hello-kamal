@@ -1,0 +1,12 @@
+{
+  "name": "kamal-demo-app",
+  "version": "1.0.0",
+  "description": "A simple Express.js server to demonstrate Kamal's functionality",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
