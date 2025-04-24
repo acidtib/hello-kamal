@@ -56,9 +56,8 @@ env:
 
 # Use a different ssh user than root
 #
-# ssh:
-#   user: app
-
+ssh:
+  user: kamal
 # Use a persistent storage volume.
 #
 # volumes:
