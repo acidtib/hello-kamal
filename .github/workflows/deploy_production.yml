@@ -1,0 +1,41 @@
+name: Deploy to Production
+
+permissions:
+  id-token: write
+  contents: read
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-production:
+    name: Deploy to production
+    concurrency:
+      group: production_environment
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    # environment:
+    #   name: production
+    #   url: https://example.com
+    timeout-minutes: 20
+    steps:
+      - name: Test
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "hello"
+          echo "$GITHUB_CONTEXT"
+          echo "workflow_run: ${{ toJson(github.event.workflow_run) }}"
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - uses: ./.github/actions/setup
+        name: Setup
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
