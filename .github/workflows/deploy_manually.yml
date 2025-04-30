@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy Manually
 
 permissions:
   id-token: write
@@ -6,12 +6,19 @@ permissions:
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+    inputs:
+      destination:
+        description: "Select a destination"
+        required: true
+        default: "production"
+        type: choice
+        options:
+          - production
 
 jobs:
-  deploy:
+  deploy-production:
+    name: Deploy to production
+    if: ${{ github.event.inputs.destination == 'production' }}
     concurrency:
       group: production_environment
       cancel-in-progress: true
@@ -22,7 +29,6 @@ jobs:
     timeout-minutes: 20
 
     env:
-      DOCKER_BUILDKIT: 1
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
 
@@ -36,13 +42,3 @@ jobs:
         name: Setup
         with:
           ssh-private-key: ${{ secrets.KAMAL_SSH_PRIVATE_KEY }}
-
-      - name: Build
-        run: |
-          kamal lock release
-          kamal registry login --skip-remote
-          kamal build push --version ${{ github.sha }}
-
-      - name: Deploy
-        run: |
-          kamal deploy --version ${{ github.sha }} --skip-push
