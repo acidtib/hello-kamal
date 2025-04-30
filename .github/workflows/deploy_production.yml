@@ -21,15 +21,13 @@ jobs:
     #   name: production
     #   url: https://example.com
     timeout-minutes: 20
-    steps:
-      - name: Test
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "hello"
-          echo "$GITHUB_CONTEXT"
-          echo "workflow_run: ${{ toJson(github.event.workflow_run) }}"
 
+    env:
+      DOCKER_BUILDKIT: 1
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
+
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -38,4 +36,4 @@ jobs:
       - uses: ./.github/actions/setup
         name: Setup
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.KAMAL_SSH_PRIVATE_KEY }}
