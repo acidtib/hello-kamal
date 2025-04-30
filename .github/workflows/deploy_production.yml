@@ -11,8 +11,7 @@ on:
       - main
 
 jobs:
-  deploy-production:
-    name: Deploy to production
+  deploy:
     concurrency:
       group: production_environment
       cancel-in-progress: true
@@ -37,3 +36,19 @@ jobs:
         name: Setup
         with:
           ssh-private-key: ${{ secrets.KAMAL_SSH_PRIVATE_KEY }}
+
+      - name: Release Lock
+        run: |
+          kamal lock release
+
+      # - name: Registry Login
+      #   run: |
+      #     kamal registry login -d production --skip-remote
+
+      # - name: Build
+      #   run: |
+      #     kamal build push -d production
+
+      # - name: Deploy
+      #   run: |
+      #     kamal deploy --skip-push -d production
