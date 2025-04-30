@@ -41,14 +41,14 @@ jobs:
         run: |
           kamal lock release
 
-      # - name: Registry Login
-      #   run: |
-      #     kamal registry login -d production --skip-remote
+      - name: Registry Login
+        run: |
+          kamal registry login --skip-remote
 
-      # - name: Build
-      #   run: |
-      #     kamal build push -d production
+      - name: Build
+        run: |
+          kamal build push
 
-      # - name: Deploy
-      #   run: |
-      #     kamal deploy --skip-push -d production
+      - name: Deploy
+        run: |
+          kamal deploy --skip-push
