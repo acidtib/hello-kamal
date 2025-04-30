@@ -20,7 +20,9 @@ runs:
 
     - name: Install Kamal
       run: |
-        gem install kamal -v 2.5.3
+        # gem install kamal -v 2.5.3
+        gem install specific_install
+        gem specific_install -l https://github.com/acidtib/kamal.git -b feat/custom-ssl
         kamal version
       shell: bash
 
